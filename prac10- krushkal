@@ -1,0 +1,62 @@
+#include <stdio.h>
+
+int main()
+{
+    int a[10][10], p[10], n, i, j, x, y;
+    int min, cost = 0, e = 0, first;
+
+    printf("Enter vertices: ");
+    scanf("%d", &n);
+
+    printf("Enter cost matrix (0 for no edge):\n");
+    for(i = 0; i < n; i++)
+        for(j = 0; j < n; j++)
+            scanf("%d", &a[i][j]);
+
+    for(i = 0; i < n; i++)
+        p[i] = i;
+
+    while(e < n - 1)
+    {
+        first = 1;
+
+        for(i = 0; i < n; i++)
+            for(j = i + 1; j < n; j++)
+                if(a[i][j] > 0)
+                    if(first || a[i][j] < min)
+                    {
+                        min = a[i][j];
+                        x = i;
+                        y = j;
+                        first = 0;
+                    }
+
+        if(first)
+            break;
+
+        a[x][y] = a[y][x] = 0;
+
+        i = x;
+        while(p[i] != i)
+            i = p[i];
+
+        j = y;
+        while(p[j] != j)
+            j = p[j];
+
+        if(i != j)
+        {
+            printf("%d - %d = %d\n", x, y, min);
+            cost += min;
+            p[i] = j;
+            e++;
+        }
+    }
+
+    if(e == n - 1)
+        printf("Total cost = %d", cost);
+    else
+        printf("Spanning tree not possible");
+
+    return 0;
+}

@@ -1,0 +1,48 @@
+#include <stdio.h>
+
+int main()
+{
+    int a[10][10], v[10] = {0};
+    int n, i, j, x, y, min, cost = 0, e = 1, first;
+
+    printf("Enter vertices: ");
+    scanf("%d", &n);
+
+    printf("Enter cost matrix (0 for no edge):\n");
+    for(i = 0; i < n; i++)
+        for(j = 0; j < n; j++)
+            scanf("%d", &a[i][j]);
+
+    v[0] = 1;
+
+    while(e < n)
+    {
+        first = 1;
+
+        for(i = 0; i < n; i++)
+            if(v[i])
+                for(j = 0; j < n; j++)
+                    if(!v[j] && a[i][j] > 0)
+                        if(first || a[i][j] < min)
+                        {
+                            min = a[i][j];
+                            x = i;
+                            y = j;
+                            first = 0;
+                        }
+
+        if(first)
+        {
+            printf("Graph is disconnected");
+            return 0;
+        }
+
+        printf("%d - %d = %d\n", x, y, min);
+        cost += min;
+        v[y] = 1;
+        e++;
+    }
+
+    printf("Total cost = %d", cost);
+    return 0;
+}

@@ -1,0 +1,44 @@
+#include <stdio.h>
+
+int min(int a, int b)
+{
+    return a < b ? a : b;
+}
+
+int main()
+{
+    int n, amount, i, j;
+    int d[10], c[10][50];
+
+    printf("Enter number of coins: ");
+    scanf("%d", &n);
+
+    printf("Enter coins: ");
+    for(i = 0; i < n; i++)
+        scanf("%d", &d[i]);
+
+    printf("Enter amount: ");
+    scanf("%d", &amount);
+
+    for(j = 0; j <= amount; j++)
+        c[0][j] = 999;
+
+    for(i = 0; i < n; i++)
+        c[i][0] = 0;
+
+    for(i = 1; i <= n; i++)
+    {
+        for(j = 1; j <= amount; j++)
+        {
+            if(j < d[i-1])
+                c[i][j] = c[i-1][j];
+            else
+                c[i][j] = min(c[i-1][j],
+                              1 + c[i][j-d[i-1]]);
+        }
+    }
+
+    printf("Minimum coins = %d", c[n][amount]);
+
+    return 0;
+}
